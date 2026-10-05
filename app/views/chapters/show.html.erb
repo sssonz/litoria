@@ -1,0 +1,30 @@
+<article>
+  <p>
+    <%= link_to "← Назад к произведению", work_path(@work) %>
+  </p>
+
+  <h1><%= @chapter.title %></h1>
+
+  <p>
+    <strong>Произведение:</strong>
+    <%= @work.title %>
+  </p>
+
+  <div>
+    <%= simple_format(@chapter.body) %>
+  </div>
+</article>
+
+<hr>
+
+<h2>Комментарии к главе</h2>
+
+<% @chapter.comments.each do |comment| %>
+  <div>
+    <p>
+      <strong><%= comment.user.username %>:</strong>
+    </p>
+
+    <p><%= comment.body %></p>
+  </div>
+<% end %>

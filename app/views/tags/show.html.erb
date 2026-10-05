@@ -1,0 +1,40 @@
+<h1><%= @tag.name %></h1>
+
+<p>
+  <strong>Тип тега:</strong>
+  <%= @tag.kind %>
+</p>
+
+<h2>Произведения с этим тегом</h2>
+
+<% if @works.any? %>
+  <% @works.each do |work| %>
+    <article>
+      <h3>
+        <%= link_to work.title, work_path(work) %>
+      </h3>
+
+      <p>
+        <strong>Автор:</strong>
+        <%= work.user.username %>
+      </p>
+
+      <p>
+        <strong>Фандом:</strong>
+        <%= work.fandom.name %>
+      </p>
+
+      <p>
+        <%= work.summary %>
+      </p>
+    </article>
+
+    <hr>
+  <% end %>
+<% else %>
+  <p>Пока нет произведений с этим тегом.</p>
+<% end %>
+
+<p>
+  <%= link_to "← Все теги", tags_path %>
+</p>

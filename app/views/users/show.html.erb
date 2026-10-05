@@ -1,0 +1,42 @@
+<section>
+  <h1><%= @user.username %></h1>
+
+  <p>
+    <strong>О себе:</strong>
+    <%= @user.bio.presence || "Пользователь пока ничего о себе не рассказал." %>
+  </p>
+
+  <p>
+    <strong>Роль:</strong>
+    <%= @user.role %>
+  </p>
+</section>
+
+<hr>
+
+<section>
+  <h2>Произведения пользователя</h2>
+
+  <% if @works.any? %>
+    <% @works.each do |work| %>
+      <article>
+        <h3>
+          <%= link_to work.title, work_path(work) %>
+        </h3>
+
+        <p>
+          <strong>Фандом:</strong>
+          <%= work.fandom.name %>
+        </p>
+
+        <p>
+          <%= work.summary %>
+        </p>
+      </article>
+
+      <hr>
+    <% end %>
+  <% else %>
+    <p>Пользователь пока не публиковал произведения.</p>
+  <% end %>
+</section>

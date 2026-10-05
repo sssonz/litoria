@@ -1,0 +1,15 @@
+<h1>Теги</h1>
+
+<% @tags.group_by(&:kind).each do |kind, tags| %>
+  <section>
+    <h2><%= kind %></h2>
+
+    <ul>
+      <% tags.each do |tag| %>
+        <li>
+          <%= link_to tag.name, tag_path(tag) %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

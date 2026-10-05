@@ -1,0 +1,52 @@
+<h1><%= @fandom.name %></h1>
+
+<p>
+  <%= @fandom.description %>
+</p>
+
+<h2>Произведения этого фандома</h2>
+
+<% if @works.any? %>
+  <% @works.each do |work| %>
+    <article>
+      <h3>
+        <%= link_to work.title, work_path(work) %>
+      </h3>
+
+      <p>
+        <strong>Автор:</strong>
+        <%= work.user.username %>
+      </p>
+
+      <p>
+        <strong>Тип:</strong>
+        <%= work.work_type %>
+      </p>
+
+      <p>
+        <strong>Рейтинг:</strong>
+        <%= work.rating %>
+      </p>
+
+      <p>
+        <%= work.summary %>
+      </p>
+
+      <p>
+        <strong>Теги:</strong>
+
+        <% work.tags.each do |tag| %>
+          <span><%= tag.name %></span>
+        <% end %>
+      </p>
+    </article>
+
+    <hr>
+  <% end %>
+<% else %>
+  <p>В этом фандоме пока нет произведений.</p>
+<% end %>
+
+<p>
+  <%= link_to "← Все фандомы", fandoms_path %>
+</p>

@@ -1,0 +1,50 @@
+<h1>Литория</h1>
+
+<p>Читайте фанфики и оригинальные произведения.</p>
+
+<h2>Произведения</h2>
+
+<% @works.each do |work| %>
+  <article>
+    <h3><%= work.title %></h3>
+
+    <p>
+      <strong>Автор:</strong>
+      <%= work.user.username %>
+    </p>
+
+    <p>
+      <strong>Фандом:</strong>
+      <%= work.fandom.name %>
+    </p>
+
+    <p>
+      <strong>Тип:</strong>
+      <%= work.work_type %>
+    </p>
+
+    <p>
+      <strong>Рейтинг:</strong>
+      <%= work.rating %>
+    </p>
+
+    <p>
+      <strong>Статус:</strong>
+      <%= work.status %>
+    </p>
+
+    <p>
+      <%= work.summary %>
+    </p>
+
+    <p>
+      <strong>Теги:</strong>
+
+      <% work.tags.each do |tag| %>
+        <span><%= tag.name %></span>
+      <% end %>
+    </p>
+  </article>
+
+  <hr>
+<% end %>

@@ -1,0 +1,69 @@
+<article>
+  <h1><%= @work.title %></h1>
+
+  <p>
+  <strong>Автор:</strong>
+  <%= link_to @work.user.username, user_path(@work.user) %>
+  </p>
+
+  <p>
+  <strong>Фандом:</strong>
+  <%= link_to @work.fandom.name, fandom_path(@work.fandom) %>
+  </p>
+
+  <p>
+    <strong>Тип:</strong>
+    <%= @work.work_type %>
+  </p>
+
+  <p>
+    <strong>Рейтинг:</strong>
+    <%= @work.rating %>
+  </p>
+
+  <p>
+    <strong>Статус:</strong>
+    <%= @work.status %>
+  </p>
+
+  <p>
+    <%= @work.summary %>
+  </p>
+
+  <p>
+  <strong>Теги:</strong>
+
+  <% @work.tags.each do |tag| %>
+    <span>
+      <%= link_to tag.name, tag_path(tag) %>
+    </span>
+  <% end %>
+  </p>
+</article>
+
+<hr>
+
+<h2>Главы</h2>
+
+<% @work.chapters.order(:position).each do |chapter| %>
+  <div>
+    <h3>
+      <%= link_to chapter.title, work_chapter_path(@work, chapter) %>
+    </h3>
+  </div>
+<% end %>
+
+<hr>
+
+<h2>Комментарии к произведению</h2>
+
+<% @work.comments.each do |comment| %>
+  <div>
+    <p><strong><%= comment.user.username %>:</strong></p>
+    <p><%= comment.body %></p>
+  </div>
+<% end %>
+
+<p>
+  <%= link_to "← Назад к каталогу", works_path %>
+</p>

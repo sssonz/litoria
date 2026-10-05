@@ -1,0 +1,19 @@
+<h1>Фандомы</h1>
+
+<% @fandoms.each do |fandom| %>
+  <article>
+    <h2>
+      <%= link_to fandom.name, fandom_path(fandom) %>
+    </h2>
+
+    <p>
+      <%= fandom.description %>
+    </p>
+
+    <p>
+      Произведений: <%= fandom.works.count %>
+    </p>
+  </article>
+
+  <hr>
+<% end %>
