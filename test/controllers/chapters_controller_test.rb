@@ -2,7 +2,10 @@ require "test_helper"
 
 class ChaptersControllerTest < ActionDispatch::IntegrationTest
   test "should get show" do
-    get chapters_show_url
+    chapter = chapters(:one)
+
+    get work_chapter_url(chapter.work, chapter)
+
     assert_response :success
   end
 end
