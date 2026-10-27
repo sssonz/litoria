@@ -1,0 +1,27 @@
+
+<main class="admin-rubric-form">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+    <%= link_to "Администрирование", admin_root_path %>
+    <span>/</span>
+    <%= link_to "Рубрики", admin_rubrics_path %>
+    <span>/</span>
+    <span>Новая рубрика</span>
+  </nav>
+
+  <header class="rubric-form-header">
+
+    <h1>Создать рубрику</h1>
+
+    <p>
+      Создайте тематическую подборку
+      и добавьте в неё произведения из каталога.
+    </p>
+
+  </header>
+
+  <%= render "form" %>
+
+</main>

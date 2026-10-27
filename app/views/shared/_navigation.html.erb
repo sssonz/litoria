@@ -1,7 +1,46 @@
-<nav>
-  <%= link_to "Литория", root_path %>
-  <%= link_to "Главная", root_path %>
-  <%= link_to "Каталог", works_path %>
-  <%= link_to "Фандомы", fandoms_path %>
-  <%= link_to "Теги", tags_path %>
-</nav>
+
+<header class="header">
+  <nav class="nav" aria-label="Основное меню">
+
+    <%= link_to root_path, class: "logo", aria: {} do %>
+      <%= image_tag "logo.svg", alt: "", width: 128, height: 43 %>
+    <% end %>
+
+    <div class="nav-links">
+      <%= link_to "О проекте", about_path %>
+      <%= link_to "Фанфики", works_path %>
+      <%= link_to "Фандомы", fandoms_path %>
+    </div>
+
+    <div class="nav-actions">
+      <% if admin_signed_in? %>
+        <%= link_to "Панель управления", admin_root_path, class: "nav-button" %>
+        <%= button_to "Выйти", logout_path, method: :delete, class: "nav-logout" %>
+      <% else %>
+        <%= link_to "Получить ранний доступ", about_path(anchor: "early-access"), class: "nav-button" %>
+      <% end %>
+    </div>
+
+    <details class="mobile-menu">
+      <summary class="menu-toggle" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </summary>
+
+      <div class="mobile-links">
+        <%= link_to "О проекте", about_path %>
+        <%= link_to "Фанфики", works_path %>
+        <%= link_to "Фандомы", fandoms_path %>
+
+        <% if admin_signed_in? %>
+          <%= link_to "Панель управления", admin_root_path, class: "nav-button" %>
+          <%= button_to "Выйти", logout_path, method: :delete, class: "nav-logout" %>
+        <% else %>
+          <%= link_to "Получить ранний доступ", about_path(anchor: "early-access"), class: "nav-button" %>
+        <% end %>
+      </div>
+    </details>
+
+  </nav>
+</header>

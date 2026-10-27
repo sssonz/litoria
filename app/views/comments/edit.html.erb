@@ -1,0 +1,97 @@
+
+<main class="comment-edit-page">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+
+    <% if @comment.commentable.is_a?(Chapter) %>
+
+      <%= link_to @comment.commentable.work.title,
+                  work_path(@comment.commentable.work) %>
+
+      <span>/</span>
+
+      <%= link_to @comment.commentable.title,
+                  work_chapter_path(
+                    @comment.commentable.work,
+                    @comment.commentable
+                  ) %>
+
+    <% else %>
+
+      <%= link_to @comment.commentable.title,
+                  work_path(@comment.commentable) %>
+
+    <% end %>
+
+    <span>/</span>
+    <span>Редактирование комментария</span>
+  </nav>
+
+  <header class="comment-edit-header">
+
+    <h1>Редактирование комментария</h1>
+
+    <p>Измените текст своего комментария.</p>
+
+  </header>
+
+  <%= form_with model: @comment,
+                class: "comment-edit-form" do |form| %>
+
+    <% if @comment.errors.any? %>
+
+      <div class="form-errors">
+
+        <h3>Не удалось сохранить изменения</h3>
+
+        <ul>
+          <% @comment.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+
+      </div>
+
+    <% end %>
+
+    <section class="comment-edit-section">
+
+      <div class="form-field">
+
+        <%= form.label :body, "Текст комментария" %>
+
+        <%= form.text_area :body,
+              rows: 8,
+              required: true,
+              placeholder: "Введите текст комментария..." %>
+
+      </div>
+
+    </section>
+
+    <div class="form-actions comment-edit-actions">
+
+      <%= form.submit "Сохранить изменения" %>
+
+      <% if @comment.commentable.is_a?(Chapter) %>
+
+        <%= link_to "Отмена",
+                    work_chapter_path(
+                      @comment.commentable.work,
+                      @comment.commentable
+                    ) %>
+
+      <% else %>
+
+        <%= link_to "Отмена",
+                    work_path(@comment.commentable) %>
+
+      <% end %>
+
+    </div>
+
+  <% end %>
+
+</main>

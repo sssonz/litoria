@@ -1,0 +1,27 @@
+
+<main class="admin-rubric-form">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+    <%= link_to "Администрирование", admin_root_path %>
+    <span>/</span>
+    <%= link_to "Рубрики", admin_rubrics_path %>
+    <span>/</span>
+    <span>Редактирование</span>
+  </nav>
+
+  <header class="rubric-form-header">
+
+    <h1>Редактирование рубрики</h1>
+
+    <p>
+      Измените название, описание или состав
+      произведений в тематической подборке.
+    </p>
+
+  </header>
+
+  <%= render "form" %>
+
+</main>

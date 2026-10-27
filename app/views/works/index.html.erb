@@ -1,48 +1,85 @@
-<h1>Каталог произведений</h1>
 
-<% @works.each do |work| %>
-  <article>
-    <h2>
-      <%= link_to work.title, work_path(work) %>
-    </h2>
+<% if admin_signed_in? %>
 
-    <p>
-      <strong>Автор:</strong>
-      <%= work.user.username %>
-    </p>
+  <main class="home-page catalog-page">
 
-    <p>
-      <strong>Фандом:</strong>
-      <%= work.fandom.name %>
-    </p>
+    <% if @works.any? %>
 
-    <p>
-      <strong>Тип:</strong>
-      <%= work.work_type %>
-    </p>
+      <div class="home-works-grid">
 
-    <p>
-      <strong>Рейтинг:</strong>
-      <%= work.rating %>
-    </p>
+        <% @works.each do |work| %>
 
-    <p>
-      <strong>Статус:</strong>
-      <%= work.status %>
-    </p>
+          <article class="home-story-card">
 
-    <p>
-      <%= work.summary %>
-    </p>
+            <%= link_to work_path(work),
+                        class: "home-story-link" do %>
 
-    <p>
-      <strong>Теги:</strong>
+              <div class="home-story-cover">
 
-      <% work.tags.each do |tag| %>
-        <span><%= tag.name %></span>
-      <% end %>
-    </p>
-  </article>
+                <% if work.cover.attached? %>
 
-  <hr>
+                  <%= image_tag work.cover,
+                        alt: "Обложка произведения #{work.title}" %>
+
+                <% else %>
+
+                  <div class="home-story-cover-empty">
+                    Нет обложки
+                  </div>
+
+                <% end %>
+
+              </div>
+
+              <div class="home-story-info">
+
+                <div class="home-story-meta">
+
+                  <span><%= work.rating %></span>
+
+                  <span>
+                    <%= {
+                      "draft" => "Черновик",
+                      "ongoing" => "В процессе",
+                      "completed" => "Завершено",
+                      "paused" => "На паузе"
+                    }.fetch(work.status, work.status) %>
+                  </span>
+
+                  <% work.tags.each do |tag| %>
+                    <span><%= tag.name %></span>
+                  <% end %>
+
+                </div>
+
+                <h3><%= work.title %></h3>
+
+                <p>
+                  <%= truncate(work.summary, length: 160) %>
+                </p>
+
+              </div>
+
+            <% end %>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="home-works-empty">
+        Произведений пока нет.
+      </div>
+
+    <% end %>
+
+  </main>
+
+<% else %>
+
+  <%= render "shared/launch" %>
+
 <% end %>

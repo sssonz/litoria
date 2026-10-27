@@ -1,0 +1,208 @@
+
+<main class="home-page">
+
+  <section class="home-rubrics">
+
+    <% if @rubrics.any? %>
+
+      <% @rubrics.each do |rubric| %>
+
+        <div class="home-rubric">
+
+        <div class="home-rubric-header">
+        
+          <h2><%= rubric.name %></h2>
+
+          <div class="home-rubric-controls">
+          
+            <button type="button"
+                    class="home-rubric-arrow"
+                    aria-label="Предыдущие произведения"
+                    onclick="this.closest('.home-rubric').querySelector('.home-rubric-list').scrollBy({left: -320, behavior: 'smooth'})">
+              <span aria-hidden="true">‹</span>
+            </button>
+
+            <button type="button"
+                    class="home-rubric-arrow"
+                    aria-label="Следующие произведения"
+                    onclick="this.closest('.home-rubric').querySelector('.home-rubric-list').scrollBy({left: 320, behavior: 'smooth'})">
+              <span aria-hidden="true">›</span>
+            </button>
+
+          </div>
+
+        </div>
+
+          <% if rubric.works.any? %>
+
+            <div class="home-rubric-list">
+
+              <% rubric.works.each do |work| %>
+
+                <article class="home-story-card">
+
+                  <%= link_to work_path(work),
+                              class: "home-story-link" do %>
+
+                    <div class="home-story-cover">
+
+                      <% if work.cover.attached? %>
+
+                        <%= image_tag work.cover,
+                              alt: "Обложка произведения #{work.title}" %>
+
+                      <% else %>
+
+                        <div class="home-story-cover-empty">
+                          Нет обложки
+                        </div>
+
+                      <% end %>
+
+                    </div>
+
+                    <div class="home-story-info">
+
+                  <div class="home-story-meta">
+                  
+                    <span><%= work.rating %></span>
+
+                    <span>
+                      <%= {
+                        "draft" => "Черновик",
+                        "ongoing" => "В процессе",
+                        "completed" => "Завершено",
+                        "paused" => "На паузе"
+                      }.fetch(work.status, work.status) %>
+                    </span>
+
+                    <% work.tags.each do |tag| %>
+                      <span><%= tag.name %></span>
+                    <% end %>
+
+                  </div>
+
+                      <h3><%= work.title %></h3>
+
+                      <p>
+                        <%= truncate(work.summary, length: 160) %>
+                      </p>
+
+                    </div>
+
+                  <% end %>
+
+                </article>
+
+              <% end %>
+
+            </div>
+
+          <% else %>
+
+            <p class="home-rubric-empty">
+              В этой рубрике пока нет произведений.
+            </p>
+
+          <% end %>
+
+        </div>
+
+      <% end %>
+
+    <% else %>
+
+      <div class="home-empty">
+        <h2>Рубрики скоро появятся</h2>
+      </div>
+
+    <% end %>
+
+  </section>
+
+  <section class="home-works">
+
+    <div class="home-works-header">
+
+      <h2>Все произведения</h2>
+
+      <%= link_to "Смотреть все →", works_path %>
+
+    </div>
+
+    <% if @works.any? %>
+
+      <div class="home-works-grid">
+
+        <% @works.each do |work| %>
+
+          <article class="home-story-card">
+
+            <%= link_to work_path(work),
+                        class: "home-story-link" do %>
+
+              <div class="home-story-cover">
+
+                <% if work.cover.attached? %>
+
+                  <%= image_tag work.cover,
+                        alt: "Обложка произведения #{work.title}" %>
+
+                <% else %>
+
+                  <div class="home-story-cover-empty">
+                    Нет обложки
+                  </div>
+
+                <% end %>
+
+              </div>
+
+              <div class="home-story-info">
+       
+              <div class="home-story-meta">
+              
+                <span><%= work.rating %></span>
+
+                <span>
+                  <%= {
+                    "draft" => "Черновик",
+                    "ongoing" => "В процессе",
+                    "completed" => "Завершено",
+                    "paused" => "На паузе"
+                  }.fetch(work.status, work.status) %>
+                </span>
+
+                <% work.tags.each do |tag| %>
+                  <span><%= tag.name %></span>
+                <% end %>
+
+              </div>
+
+                <h3><%= work.title %></h3>
+
+                <p>
+                  <%= truncate(work.summary, length: 160) %>
+                </p>
+
+              </div>
+
+            <% end %>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <p class="home-works-empty">
+        Произведений пока нет.
+      </p>
+
+    <% end %>
+
+  </section>
+
+</main>

@@ -1,0 +1,49 @@
+
+<% if flash[:notice].present? || flash[:alert].present? %>
+  <dialog class="modal" id="message-modal" aria-labelledby="modal-title">
+
+    <form method="dialog">
+      <button class="modal-close" aria-label="Закрыть">×</button>
+    </form>
+
+    <% if flash[:notice].present? %>
+      <div class="modal-icon success">✓</div>
+
+      <h2 id="modal-title" tabindex="-1">Заявка отправлена!</h2>
+
+      <p><%= flash[:notice] %></p>
+    <% else %>
+      <div class="modal-icon error">!</div>
+
+      <h2 id="modal-title" tabindex="-1">Не удалось отправить</h2>
+
+      <p><%= flash[:alert] %></p>
+    <% end %>
+
+  </dialog>
+
+  <script>
+    const modal = document.getElementById("message-modal");
+
+    modal.showModal();
+    modal.querySelector("#modal-title").focus({ preventScroll: true });
+
+    modal.addEventListener("close", () => {
+      const position = sessionStorage.getItem("about-scroll");
+
+      if (position === null) return;
+
+      sessionStorage.removeItem("about-scroll");
+
+      requestAnimationFrame(() => {
+        const page = document.documentElement;
+        const previous = page.style.scrollBehavior;
+
+        page.style.scrollBehavior = "auto";
+        window.scrollTo(0, Number(position));
+        page.style.scrollBehavior = previous;
+      });
+    });
+  </script>
+
+<% end %>

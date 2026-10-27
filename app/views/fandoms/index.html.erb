@@ -1,19 +1,83 @@
-<h1>Фандомы</h1>
 
-<% @fandoms.each do |fandom| %>
-  <article>
-    <h2>
-      <%= link_to fandom.name, fandom_path(fandom) %>
-    </h2>
+<% if admin_signed_in? %>
 
-    <p>
-      <%= fandom.description %>
-    </p>
+  <main class="fandom-index-page">
 
-    <p>
-      Произведений: <%= fandom.works.count %>
-    </p>
-  </article>
+    <% if @fandoms.any? %>
 
-  <hr>
+      <div class="fandom-index-grid">
+
+        <% @fandoms.each do |fandom| %>
+
+          <article class="fandom-index-card">
+
+            <%= link_to fandom_path(fandom),
+                        class: "fandom-index-link" do %>
+
+              <% fandom_images = {
+                "Baldur's Gate 3" => "baldurs-gate-3.jpg",
+                "Genshin Impact" => "genshin.jpg",
+                "Гарри Поттер" => "dramione.jpg",
+                "Ориджиналы" => "romance.jpg"
+              } %>
+
+              <div class="fandom-index-cover">
+              
+                <% if fandom_images[fandom.name] %>
+
+                  <%= image_tag "/fandoms/#{fandom_images[fandom.name]}",
+                        alt: fandom.name,
+                        class: "fandom-index-image" %>
+
+                <% else %>
+
+                  <span><%= fandom.name.to_s.first(1) %></span>
+
+                <% end %>
+
+              </div>
+
+              <div class="fandom-index-info">
+
+                <h2><%= fandom.name %></h2>
+
+                <% if fandom.description.present? %>
+
+                  <p class="fandom-index-description">
+                    <%= truncate(fandom.description, length: 150) %>
+                  </p>
+
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="fandom-index-empty">
+
+        <h2>Фэндомов пока нет</h2>
+
+        <p>
+          Здесь появятся вселенные,
+          по которым можно читать и создавать истории.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </main>
+
+<% else %>
+
+  <%= render "shared/launch" %>
+
 <% end %>

@@ -1,0 +1,147 @@
+
+<main class="admin-rubrics-page">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+    <%= link_to "Администрирование", admin_root_path %>
+    <span>/</span>
+    <span>Рубрики</span>
+  </nav>
+
+  <header class="admin-rubrics-header">
+
+    <div>
+
+      <h1>Управление рубриками</h1>
+
+      <p>
+        Создавайте тематические подборки
+        и управляйте произведениями внутри них.
+      </p>
+    </div>
+
+    <%= link_to "+ Создать рубрику",
+                new_admin_rubric_path,
+                class: "admin-create-button" %>
+
+  </header>
+
+  <section class="admin-rubrics-content">
+
+    <div class="admin-rubrics-section-header">
+
+      <div>
+        <h2>Все рубрики</h2>
+      </div>
+
+      <span class="admin-rubrics-count">
+        <%= @rubrics.size %>
+      </span>
+
+    </div>
+
+    <% if @rubrics.any? %>
+
+      <div class="admin-rubrics-grid">
+
+        <% @rubrics.each do |rubric| %>
+
+          <article class="admin-rubric-card">
+
+            <div class="admin-rubric-top">
+
+              <h3><%= rubric.name %></h3>
+
+              <span class="admin-rubric-count">
+                <%= rubric.works.count %> произведений
+              </span>
+
+            </div>
+
+            <% if rubric.description.present? %>
+
+              <p class="admin-rubric-description">
+                <%= rubric.description %>
+              </p>
+
+            <% end %>
+
+            <div class="admin-rubric-works">
+
+              <h4>Произведения в рубрике</h4>
+
+              <% if rubric.works.any? %>
+
+                <ul class="admin-rubric-works-list">
+
+                  <% rubric.works.each do |work| %>
+
+                    <li>
+                      <%= link_to work.title,
+                                  work_path(work) %>
+                    </li>
+
+                  <% end %>
+
+                </ul>
+
+              <% else %>
+
+                <p class="admin-rubric-empty-text">
+                  В рубрике пока нет произведений.
+                </p>
+
+              <% end %>
+
+            </div>
+
+            <div class="admin-rubric-actions">
+
+              <%= link_to "Редактировать",
+                          edit_admin_rubric_path(rubric),
+                          class: "admin-rubric-edit" %>
+
+              <%= button_to "Удалить рубрику",
+                            admin_rubric_path(rubric),
+                            method: :delete,
+                            form: {
+                              data: {
+                                turbo_confirm: "Удалить рубрику? Произведения сохранятся."
+                              }
+                            },
+                            class: "admin-rubric-delete" %>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="rubrics-empty">
+
+        <h3>Рубрик пока нет</h3>
+
+        <p>
+          Создайте первую тематическую подборку произведений.
+        </p>
+
+        <%= link_to "Создать первую рубрику",
+                    new_admin_rubric_path,
+                    class: "admin-create-button" %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+  <%= link_to "← Панель управления",
+              admin_root_path,
+              class: "admin-rubrics-back" %>
+
+</main>

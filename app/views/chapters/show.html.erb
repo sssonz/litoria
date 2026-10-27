@@ -1,30 +1,174 @@
-<article>
-  <p>
-    <%= link_to "← Назад к произведению", work_path(@work) %>
-  </p>
 
-  <h1><%= @chapter.title %></h1>
+<main class="chapter-show-page">
 
-  <p>
-    <strong>Произведение:</strong>
-    <%= @work.title %>
-  </p>
+  <article class="chapter-reading">
 
-  <div>
-    <%= simple_format(@chapter.body) %>
-  </div>
-</article>
+    <header class="chapter-read-header">
 
-<hr>
+      <p class="admin-label">Литория / Чтение</p>
 
-<h2>Комментарии к главе</h2>
+      <h1><%= @chapter.title %></h1>
 
-<% @chapter.comments.each do |comment| %>
-  <div>
-    <p>
-      <strong><%= comment.user.username %>:</strong>
-    </p>
+      <%= link_to @work.title,
+                  work_path(@work),
+                  class: "chapter-work-link" %>
 
-    <p><%= comment.body %></p>
-  </div>
-<% end %>
+      <% if current_user && @work.user_id == current_user.id %>
+      
+        <div class="chapter-admin-actions">
+          <%= link_to "Редактировать главу",
+                      edit_work_chapter_path(@work, @chapter) %>
+        </div>
+      
+      <% end %>
+      
+    </header>
+
+    <div class="chapter-read-body">
+      <%= simple_format(@chapter.body) %>
+    </div>
+
+  </article>
+
+  <% chapters = @work.chapters.order(:position, :id).to_a %>
+  <% chapter_index = chapters.index { |chapter| chapter.id == @chapter.id } %>
+
+  <% previous_chapter = chapter_index && chapter_index > 0 ? chapters[chapter_index - 1] : nil %>
+  <% next_chapter = chapter_index ? chapters[chapter_index + 1] : nil %>
+
+  <nav class="chapter-navigation" aria-label="Навигация по главам">
+
+    <% if previous_chapter %>
+
+      <%= link_to work_chapter_path(@work, previous_chapter),
+                  class: "chapter-navigation-link" do %>
+
+        <span>← Предыдущая глава</span>
+        <strong><%= previous_chapter.title %></strong>
+
+      <% end %>
+
+    <% end %>
+
+    <% if next_chapter %>
+
+      <%= link_to work_chapter_path(@work, next_chapter),
+                  class: "chapter-navigation-link chapter-navigation-next" do %>
+
+        <span>Следующая глава →</span>
+        <strong><%= next_chapter.title %></strong>
+
+      <% end %>
+
+    <% end %>
+
+  </nav>
+
+  <section class="chapter-comments">
+
+    <div class="chapter-comments-header">
+
+      <h2>Комментарии</h2>
+
+      <span><%= @chapter.comments.count %></span>
+
+    </div>
+
+    <div class="chapter-comments-list">
+
+      <% if @chapter.comments.any? %>
+
+        <% @chapter.comments.each do |comment| %>
+
+          <article class="comment-card">
+
+            <div class="comment-author">
+              <strong><%= comment.user.username %></strong>
+            </div>
+
+            <p class="comment-text">
+              <%= comment.body %>
+            </p>
+
+            <% if current_user || admin_signed_in? %>
+
+              <div class="comment-actions">
+
+                <% if current_user && comment.user_id == current_user.id %>
+
+                  <%= link_to "Редактировать",
+                              edit_comment_path(comment),
+                              class: "edit-comment-button" %>
+
+                <% end %>
+
+                <% if admin_signed_in? || (current_user && comment.user_id == current_user.id) %>
+
+                  <%= button_to "Удалить",
+                                comment_path(comment),
+                                method: :delete,
+                                form: {
+                                  data: {
+                                    turbo_confirm: "Вы уверены, что хотите удалить комментарий?"
+                                  }
+                                },
+                                class: "delete-comment-button" %>
+
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+          </article>
+
+        <% end %>
+
+      <% else %>
+
+        <p class="chapter-comments-empty">
+          Комментариев пока нет.
+        </p>
+
+      <% end %>
+
+    </div>
+
+    <% if current_user %>
+
+      <div class="comment-form">
+
+        <h3>Оставить комментарий</h3>
+
+        <%= form_with scope: :comment,
+                      url: work_chapter_comments_path(@work, @chapter),
+                      method: :post do |form| %>
+
+          <div class="form-field">
+
+            <%= form.label :body, "Ваш комментарий" %>
+
+            <%= form.text_area :body,
+                  rows: 4,
+                  required: true,
+                  placeholder: "Поделитесь впечатлениями о главе..." %>
+
+          </div>
+
+          <div class="form-actions">
+            <%= form.submit "Опубликовать комментарий" %>
+          </div>
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+  <%= link_to "← Вернуться к произведению",
+              work_path(@work),
+              class: "chapter-back" %>
+
+</main>

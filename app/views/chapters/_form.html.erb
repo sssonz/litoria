@@ -1,0 +1,60 @@
+<%= form_with model: [@work, @chapter],
+              class: "chapter-form" do |form| %>
+
+  <% if @chapter.errors.any? %>
+    <div class="form-errors">
+      <h3>Не удалось сохранить главу</h3>
+
+      <ul>
+        <% @chapter.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <section class="chapter-editor">
+
+    <div class="chapter-editor-heading">
+      <h2>Содержание главы</h2>
+
+      <p>
+        Придумайте название и напишите текст своей истории.
+      </p>
+    </div>
+
+    <div class="chapter-editor-fields">
+
+      <div class="form-field">
+        <%= form.label :title, "Название главы" %>
+
+        <%= form.text_field :title,
+              required: true,
+              placeholder: "Например: Глава 1. Начало" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :body, "Текст главы" %>
+
+        <%= form.text_area :body,
+              rows: 20,
+              required: true,
+              placeholder: "Начните писать свою историю...",
+              class: "chapter-textarea" %>
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="form-actions chapter-form-actions">
+
+    <%= form.submit(
+          @chapter.persisted? ? "Сохранить изменения" : "Опубликовать главу"
+        ) %>
+
+    <%= link_to "Отмена", work_path(@work) %>
+
+  </div>
+
+<% end %>

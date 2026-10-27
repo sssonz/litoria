@@ -1,0 +1,455 @@
+
+<main class="about-page">
+
+  <section class="about-hero">
+
+    <div class="about-heading">
+      <h1>
+        Истории,<br>
+        на которые<br>
+        <span>ты влияешь</span>
+      </h1>
+    </div>
+
+    <div class="about-info">
+
+      <p>
+        Платформа для фанфиков и оригинальных историй,
+        где можно читать, публиковаться, голосовать и поддерживать авторов.
+      </p>
+
+      <%= form_with url: subscribers_path,
+                    scope: :subscriber,
+                    class: "about-form",
+                    id: "about-top",
+                    data: { turbo: false } do |form| %>
+
+        <%= form.hidden_field :source, value: "about" %>
+
+        <%= form.email_field :email,
+              placeholder: "Электронная почта",
+              required: true,
+              autocomplete: "email" %>
+
+        <label class="about-check">
+          <%= form.check_box :consent, { required: true }, "1", "0" %>
+          <span>Я согласен на обработку персональных данных</span>
+        </label>
+
+        <%= form.submit "Получить доступ",
+              class: "about-button" %>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+  <section class="fandoms">
+
+    <% fandom_list = [
+      ["Драмиона", "dramione"],
+      ["BTS", "bts"],
+      ["Романтика", "romance"],
+      ["Дневники вампира", "vampire-diaries"],
+      ["Атака Титанов", "attack-on-titan"],
+      ["Genshin Impact", "genshin"],
+      ["Ведьмак", "witcher"],
+      ["Наруто", "naruto"],
+      ["Волчонок", "teen-wolf"],
+      ["Клуб Винкс", "winx"],
+      ["Ромиона", "romione"],
+      ["Дом Дракона", "house-of-dragon"],
+      ["Однажды в сказке", "once-upon-a-time"],
+      ["Вне кампуса", "off-campus"],
+      ["Уэнздей", "wednesday"],
+      ["АИУ", "ahs"]
+    ] %>
+
+    <div class="fandoms-list">
+      <% fandom_list.each do |name, image| %>
+        <button
+          type="button"
+          class="fandom"
+          data-image="/fandoms/<%= image %>.jpg">
+          <%= name %>
+        </button>
+      <% end %>
+    </div>
+
+    <div class="fandom-preview" aria-hidden="true">
+      <img src="" alt="">
+    </div>
+
+  </section>
+
+  <section class="story">
+
+    <h2 class="story-title">
+      <span>Влияй</span><br>
+      на сюжет
+    </h2>
+
+    <div class="story-cards">
+
+      <article class="story-card">
+        <div class="story-info">
+          <h3>Читай</h3>
+          <p>
+            Находи оригинальные истории и фанфики,
+            следи за авторами и открывай новые главы.
+          </p>
+        </div>
+
+        <div class="story-image">
+          <img src="/about/read.png" alt="">
+        </div>
+      </article>
+
+      <article class="story-card">
+        <div class="story-info">
+          <h3>Предлагай</h3>
+          <p>
+            Придумай, что произойдёт дальше.
+            Поделись идеей с автором и другими.
+          </p>
+        </div>
+
+        <div class="story-image">
+          <img src="/about/suggest.png" alt="">
+        </div>
+      </article>
+
+      <article class="story-card">
+        <div class="story-info">
+          <h3>Голосуй</h3>
+          <p>
+            Поддерживай понравившиеся варианты
+            и помогай идеям продвинуться выше.
+          </p>
+        </div>
+
+        <div class="story-image">
+          <img src="/about/vote.png" alt="">
+        </div>
+      </article>
+
+      <article class="story-card">
+        <div class="story-info">
+          <h3>Влияй</h3>
+          <p>
+            Следи за результатами и узнавай,
+            какие предложения отразились
+            в следующих главах.
+          </p>
+        </div>
+
+        <div class="story-image">
+          <img src="/about/influence.png" alt="">
+        </div>
+      </article>
+
+    </div>
+
+  </section>
+
+  <section class="audience">
+
+    <div class="audience-head">
+
+      <h2 class="audience-title" id="audience-title">
+        <span>Твоё место</span><br>
+        в Литории
+      </h2>
+
+      <div class="audience-switch">
+
+        <button
+          type="button"
+          class="audience-btn active"
+          data-audience="reader"
+          aria-controls="reader-cards"
+          aria-pressed="true">
+          Я читаю
+        </button>
+
+        <button
+          type="button"
+          class="audience-btn"
+          data-audience="writer"
+          aria-controls="writer-cards"
+          aria-pressed="false">
+          Я пишу
+        </button>
+
+      </div>
+
+    </div>
+
+    <div class="audience-cards" id="reader-cards">
+
+      <article class="audience-card">
+        <div>
+          <h3>Та самая история</h3>
+          <div class="audience-tags">
+            <span>фэнтези</span>
+            <span>slow burn</span>
+            <span>романтика</span>
+          </div>
+        </div>
+        <p>
+          Фэндомы, пейринги и гибкие теги.
+          Находите то, что откликается, и выбирайте,
+          что хотите видеть в своей ленте.
+        </p>
+      </article>
+
+      <article class="audience-card">
+        <div>
+          <h3>Ещё одн <br> углаву?</h3>
+          <div class="audience-tags">
+            <span>новые главы</span>
+            <span>скрытно</span>
+            <span>ничего не отвлекает</span>
+          </div>
+        </div>
+        <p>
+          Спокойный интерфейс для чтения.
+          Любимые работы и новые главы рядом —
+          чтобы легко вернуться в свой мир.
+        </p>
+      </article>
+
+      <article class="audience-card">
+        <div>
+          <h3>«Автор, продолжай»</h3>
+          <div class="audience-tags">
+            <span>донаты</span>
+            <span>ранний доступ</span>
+            <span>голосуй за продолжение</span>
+          </div>
+        </div>
+        <p>
+          Поддерживайте конкретную историю донатом,
+          подписывайтесь на автора и получайте
+          ранний доступ, если он его откроет.
+        </p>
+      </article>
+
+    </div>
+
+    <div class="audience-cards" id="writer-cards" hidden>
+
+      <article class="audience-card">
+        <div>
+          <h3>Пишите в своём мире</h3>
+          <div class="audience-tags">
+            <span>фанфики</span>
+            <span>оригиналы</span>
+            <span>твои истории</span>
+          </div>
+        </div>
+        <p>
+          Публикуй фанфики и оригинальные истории.
+          Привычные фэндомы, теги и рейтинги помогут
+          твоим работам найти своих читателей.
+        </p>
+      </article>
+
+      <article class="audience-card">
+        <div>
+          <h3>Свои <br> читатели</h3>
+          <div class="audience-tags">
+            <span>обсуждения</span>
+            <span>отклик</span>
+            <span>сообщество</span>
+          </div>
+        </div>
+        <p>
+          Делись новыми главами, получай отклик
+          и общайся с теми, кто ждёт продолжения
+          твоей истории.
+        </p>
+      </article>
+
+      <article class="audience-card">
+        <div>
+          <h3>Поддержка творчества</h3>
+          <div class="audience-tags">
+            <span>подписки</span>
+            <span>донаты</span>
+            <span>ранний доступ</span>
+          </div>
+        </div>
+        <p>
+          Выбирай, как принимать поддержку:
+          донаты за продолжение, подписки на автора
+          или ранний доступ к новым главам.
+        </p>
+      </article>
+
+    </div>
+
+  </section>
+
+  <section class="access" id="early-access">
+
+    <h2 class="access-title">
+      <span>Получи</span><br>
+      ранний доступ
+    </h2>
+
+    <div class="access-info">
+
+      <p>
+        Оставь email — мы отправим приглашение
+        в первый день запуска. Будем делиться
+        только важными новостями проекта.
+      </p>
+
+      <%= form_with url: subscribers_path,
+                    scope: :subscriber,
+                    class: "about-form",
+                    id: "about-bottom",
+                    data: { turbo: false } do |form| %>
+        
+        <%= form.hidden_field :source, value: "about" %>
+
+        <%= form.email_field :email,
+              placeholder: "Электронная почта",
+              required: true,
+              autocomplete: "email" %>
+
+        <label class="about-check">
+          <%= form.check_box :consent, { required: true }, "1", "0" %>
+          <span>Я согласен на обработку персональных данных</span>
+        </label>
+
+        <%= form.submit "Получить доступ",
+              class: "about-button" %>
+
+      <% end %>
+
+      <p class="access-note">
+        <% if @subscribers_count.zero? %>
+          Стань первым, кто получит приглашение
+        <% else %>
+          <% count = @subscribers_count %>
+
+          <% people = if (2..4).cover?(count % 10) && !(12..14).cover?(count % 100)
+            "человека"
+          else
+            "человек"
+          end %>
+
+          Литорию уже ждут:
+          <%= number_with_delimiter(count, delimiter: " ") %>
+          <%= people %>
+        <% end %>
+      </p>
+
+    </div>
+
+  </section>
+
+  <section class="faq">
+
+    <h2 class="faq-title">
+      Остались<br>
+      вопросы?
+    </h2>
+
+    <div class="faq-list">
+
+      <details class="faq-item" name="about-faq">
+        <summary>
+          <span>Когда откроется Литория?</span>
+          <span class="faq-icon"></span>
+        </summary>
+        <p>
+          Планируем запуск в середине июня 2027 года.
+          Оставь email, чтобы первым узнать об открытии.
+        </p>
+      </details>
+
+      <details class="faq-item" name="about-faq">
+        <summary>
+          <span>Здесь будут только фанфики?</span>
+          <span class="faq-icon"></span>
+        </summary>
+        <p>
+          Нет! В Литории можно будет читать и публиковать
+          как фанфики по любимым вселенным,
+          так и оригинальные истории.
+        </p>
+      </details>
+
+      <details class="faq-item" name="about-faq">
+        <summary>
+          <span>Всё чтение будет платным?</span>
+          <span class="faq-icon"></span>
+        </summary>
+        <p>
+          Нет, в Литории будет бесплатный контент.
+          Авторы также смогут предлагать платные главы,
+          ранний доступ и дополнительные материалы.
+        </p>
+      </details>
+
+      <details class="faq-item" name="about-faq">
+        <summary>
+          <span>Можно публиковаться и на других площадках?</span>
+          <span class="faq-icon"></span>
+        </summary>
+        <p>
+          Да, мы не планируем ограничивать авторов
+          одной платформой. Ты сможешь делиться
+          своими историями и на других площадках.
+        </p>
+      </details>
+
+      <details class="faq-item" name="about-faq">
+        <summary>
+          <span>Можно ли публиковать контент 18+?</span>
+          <span class="faq-icon"></span>
+        </summary>
+        <p>
+          Да, при соблюдении правил платформы
+          и обязательной возрастной маркировке.
+          Для таких произведений будут предусмотрены
+          соответствующие ограничения доступа.
+        </p>
+      </details>
+
+      <details class="faq-item" name="about-faq">
+        <summary>
+          <span>Как авторы будут зарабатывать?</span>
+          <span class="faq-icon"></span>
+        </summary>
+        <p>
+          Авторы смогут получать донаты,
+          открывать ранний доступ к главам
+          и предлагать платные подписки.
+        </p>
+      </details>
+
+    </div>
+
+  </section>
+
+</main>
+
+<div class="container">
+  <%= render "shared/footer" %>
+</div>
+
+<%= render "shared/message_modal" %>
+
+<script>
+  document.querySelectorAll(".about-form").forEach((form) => {
+    form.addEventListener("submit", () => {
+      sessionStorage.setItem("about-scroll", String(window.scrollY));
+    });
+  });
+</script>
+

@@ -1,0 +1,313 @@
+
+<main class="admin-works-page">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+    <%= link_to "Администрирование", admin_root_path %>
+    <span>/</span>
+    <span>Произведения</span>
+  </nav>
+
+  <header class="admin-works-header">
+
+    <div>
+      <h1>Управление произведениями</h1>
+
+      <p>
+        Создавайте истории, редактируйте произведения
+        и управляйте опубликованными главами.
+      </p>
+    </div>
+
+    <%= link_to "+ Создать произведение",
+                new_work_path,
+                class: "admin-create-button" %>
+
+  </header>
+
+  <section class="admin-works-section">
+
+    <div class="admin-works-section-header">
+      <div>
+        <h2>Мои произведения</h2>
+      </div>
+
+      <span class="admin-works-count">
+        <%= @works.size %>
+      </span>
+    </div>
+
+    <% if @works.any? %>
+
+      <div class="admin-works-list">
+
+        <% @works.each do |work| %>
+
+          <article class="admin-work-card">
+
+            <div class="admin-work-main">
+
+              <div class="admin-work-info">
+
+                <div class="admin-work-cover">
+                  <%= link_to work_path(work) do %>
+
+                    <% if work.cover.attached? %>
+                      <%= image_tag work.cover,
+                            alt: "Обложка произведения #{work.title}" %>
+                    <% else %>
+                      <span>Нет обложки</span>
+                    <% end %>
+
+                  <% end %>
+                </div>
+
+                <div class="admin-work-details">
+
+                  <div class="admin-work-title">
+                    <h3>
+                      <%= link_to work.title, work_path(work) %>
+                    </h3>
+
+                    <span class="admin-work-status">
+                      <%= work.status %>
+                    </span>
+                  </div>
+
+                  <div class="admin-work-meta">
+
+                    <p>
+                      <span>Фэндом</span>
+                      <%= work.fandom.name %>
+                    </p>
+
+                    <p>
+                      <span>Рейтинг</span>
+                      <%= work.rating %>
+                    </p>
+
+                    <p>
+                      <span>Главы</span>
+                      <%= work.chapters.size %>
+                    </p>
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div class="admin-work-actions">
+
+                <%= link_to "Редактировать",
+                            edit_work_path(work),
+                            class: "admin-work-edit" %>
+
+                <%= link_to "+ Добавить главу",
+                            new_work_chapter_path(work),
+                            class: "admin-work-add" %>
+
+                <%= button_to "Удалить",
+                              work_path(work),
+                              method: :delete,
+                              form: {
+                                data: {
+                                  turbo_confirm: "Удалить произведение со всеми главами?"
+                                }
+                              },
+                              class: "admin-work-delete" %>
+
+              </div>
+
+            </div>
+
+            <div class="admin-work-chapters">
+
+              <div class="admin-chapters-heading">
+                <h4>Главы произведения</h4>
+              </div>
+
+              <% if work.chapters.any? %>
+
+                <ul class="admin-chapters-list">
+
+                  <% work.chapters.sort_by(&:position).each do |chapter| %>
+
+                    <li class="admin-chapter-item">
+
+                      <%= link_to chapter.title,
+                                  work_chapter_path(work, chapter),
+                                  class: "admin-chapter-title" %>
+
+                      <div class="admin-chapter-actions">
+
+                        <%= link_to "Редактировать",
+                                    edit_work_chapter_path(work, chapter) %>
+
+                        <%= button_to "Удалить",
+                                      work_chapter_path(work, chapter),
+                                      method: :delete,
+                                      form: {
+                                        data: {
+                                          turbo_confirm: "Удалить эту главу?"
+                                        }
+                                      } %>
+
+                      </div>
+
+                    </li>
+
+                  <% end %>
+
+                </ul>
+
+              <% else %>
+
+                <p class="admin-chapters-empty">
+                  Глав пока нет. Добавьте первую главу.
+                </p>
+
+              <% end %>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="admin-empty-state">
+
+        <h3>У вас пока нет произведений</h3>
+
+        <p>
+          Создайте свою первую историю, чтобы начать публикацию.
+        </p>
+
+        <%= link_to "Создать произведение",
+                    new_work_path,
+                    class: "admin-create-button" %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+  <section class="admin-other-works">
+
+    <div class="admin-works-section-header">
+      <div>
+        <h2>Произведения других авторов</h2>
+      </div>
+
+      <span class="admin-works-count">
+        <%= @other_works.size %>
+      </span>
+    </div>
+
+    <% if @other_works.any? %>
+
+      <div class="admin-works-list">
+
+        <% @other_works.each do |work| %>
+
+          <article class="admin-work-card">
+
+            <div class="admin-work-main">
+
+              <div class="admin-work-info">
+
+                <div class="admin-work-cover">
+                  <%= link_to work_path(work) do %>
+
+                    <% if work.cover.attached? %>
+                      <%= image_tag work.cover,
+                            alt: "Обложка произведения #{work.title}" %>
+                    <% else %>
+                      <span>Нет обложки</span>
+                    <% end %>
+
+                  <% end %>
+                </div>
+
+                <div class="admin-work-details">
+
+                  <div class="admin-work-title">
+                    <h3>
+                      <%= link_to work.title, work_path(work) %>
+                    </h3>
+                  </div>
+
+                  <div class="admin-work-meta">
+
+                    <p>
+                      <span>Автор</span>
+                      <%= work.user.username %>
+                    </p>
+
+                    <p>
+                      <span>Фэндом</span>
+                      <%= work.fandom.name %>
+                    </p>
+
+                    <p>
+                      <span>Рейтинг</span>
+                      <%= work.rating %>
+                    </p>
+
+                  </div>
+
+                  <p class="admin-work-summary">
+                    <%= work.summary %>
+                  </p>
+
+                </div>
+
+              </div>
+
+              <div class="admin-moderation-actions">
+
+                <%= link_to "Посмотреть",
+                            work_path(work),
+                            class: "admin-work-edit" %>
+
+                <%= button_to "Удалить произведение",
+                              work_path(work),
+                              method: :delete,
+                              form: {
+                                data: {
+                                  turbo_confirm: "Удалить чужое произведение со всеми главами и комментариями? Это действие нельзя отменить."
+                                }
+                              },
+                              class: "admin-work-delete" %>
+
+              </div>
+
+            </div>
+
+          </article>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <div class="admin-empty-state">
+        <p>Произведений других авторов пока нет.</p>
+      </div>
+
+    <% end %>
+
+  </section>
+
+  <%= link_to "← Панель управления",
+              admin_root_path,
+              class: "admin-works-back" %>
+
+</main>

@@ -136,7 +136,7 @@ letters_from_hogwarts = Work.create!(
   title: "Письма из Хогвартса",
   summary: "После окончания школы герои продолжают общаться через письма и постепенно узнают друг друга заново.",
   work_type: "fanfiction",
-  rating: "12+",
+  rating: "18+",
   status: "completed",
   user: sofia,
   fandom: harry_potter

@@ -1,0 +1,118 @@
+
+<%= form_with model: [:admin, @rubric],
+              class: "rubric-form" do |form| %>
+
+  <% if @rubric.errors.any? %>
+
+    <div class="form-errors">
+
+      <h3>Не удалось сохранить рубрику</h3>
+
+      <ul>
+        <% @rubric.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+
+    </div>
+
+  <% end %>
+
+  <section class="rubric-form-section">
+
+    <div class="rubric-form-section-heading">
+      <h2>Основная информация</h2>
+
+      <p>
+        Укажите название и описание тематической подборки.
+      </p>
+    </div>
+
+    <div class="rubric-form-fields">
+
+      <div class="form-field">
+
+        <%= form.label :name, "Название рубрики" %>
+
+        <%= form.text_field :name,
+              required: true,
+              placeholder: "Например: Выбор редакции" %>
+
+      </div>
+
+      <div class="form-field">
+
+        <%= form.label :description, "Описание рубрики" %>
+
+        <%= form.text_area :description,
+              rows: 5,
+              placeholder: "Какие истории собраны в этой рубрике?" %>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="rubric-form-section">
+
+    <div class="rubric-form-section-heading">
+
+      <h2>Произведения в рубрике</h2>
+
+      <p>
+        Выберите истории для подборки.
+        Одно произведение может входить в несколько рубрик.
+      </p>
+
+    </div>
+
+    <fieldset class="rubric-form-works">
+
+      <legend>Выбор произведений</legend>
+
+      <% if Work.exists? %>
+
+        <div class="rubric-form-list">
+
+          <%= form.collection_check_boxes :work_ids,
+                Work.order(:title),
+                :id,
+                :title do |checkbox| %>
+
+            <div class="rubric-work-checkbox">
+
+              <%= checkbox.label do %>
+                <%= checkbox.check_box %>
+                <%= checkbox.text %>
+              <% end %>
+
+            </div>
+
+          <% end %>
+
+        </div>
+
+      <% else %>
+
+        <p class="rubric-form-empty">
+          Пока нет произведений для добавления.
+        </p>
+
+      <% end %>
+
+    </fieldset>
+
+  </section>
+
+  <div class="form-actions rubric-form-actions">
+
+    <%= form.submit(
+          @rubric.persisted? ? "Сохранить изменения" : "Создать рубрику"
+        ) %>
+
+    <%= link_to "Отмена", admin_rubrics_path %>
+
+  </div>
+
+<% end %>

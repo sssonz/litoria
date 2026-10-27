@@ -1,0 +1,18 @@
+
+<footer class="landing-footer">
+  <div class="footer-info">
+    <%= link_to root_path do %>
+      <%= image_tag "logo.svg", alt: "Литория" %>
+    <% end %>
+
+    <p>Место, где истории находят своих читателей</p>
+  </div>
+  <div class="footer-links">
+    <%= link_to "https://t.me/+GDLnV4prY1lmNDMy",
+                target: "_blank",
+                rel: "noopener noreferrer" do %>
+      Telegram
+    <% end %>
+    <%= mail_to "https://t.me/+GDLnV4prY1lmNDMy", "Написать нам" %>
+  </div>
+</footer>

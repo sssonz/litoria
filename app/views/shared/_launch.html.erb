@@ -1,0 +1,109 @@
+  <main class="landing">
+
+    <section class="landing-hero">
+
+      <p class="landing-label">Скоро первая глава</p>
+
+      <h1 class="landing-title">
+        У каждой истории<br>
+        есть свои читатели
+      </h1>
+
+      <div class="countdown">
+
+        <div class="countdown-item">
+          <span class="countdown-number">--</span>
+          <span class="countdown-label">дня</span>
+        </div>
+
+        <div class="countdown-item">
+          <span class="countdown-number">--</span>
+          <span class="countdown-label">часов</span>
+        </div>
+
+        <div class="countdown-item">
+          <span class="countdown-number">--</span>
+          <span class="countdown-label">минут</span>
+        </div>
+
+        <div class="countdown-item">
+          <span class="countdown-number">--</span>
+          <span class="countdown-label">секунд</span>
+        </div>
+
+      </div>
+
+      <p class="landing-text">
+        Литория скоро откроется. Здесь можно будет читать
+        фанфики, публиковать свои истории <br> и поддерживать авторов.
+      </p>
+
+      <%= form_with url: subscribers_path,
+                    scope: :subscriber,
+                    class: "signup",
+                    id: "early-access",
+                    data: { turbo: false } do |form| %>
+        
+        <%= form.hidden_field :source, value: request.path %>
+
+        <div class="signup-row">
+
+          <%= form.email_field :email,
+                placeholder: "Электронная почта",
+                required: true,
+                autocomplete: "email" %>
+
+          <%= form.button "Получить ранний доступ",
+                type: "submit" %>
+
+        </div>
+
+        <label class="signup-check">
+          <%= form.check_box :consent, { required: true }, "1", "0" %>
+          <span>Я согласен на обработку персональных данных</span>
+        </label>
+
+      <% end %>
+
+      <%= render "shared/message_modal" %>
+
+    </section>
+
+    <%= render "shared/footer" %>
+
+  </main>
+
+<script>
+  function startCountdown() {
+    const timer = document.querySelector(".countdown");
+    if (!timer) return;
+
+    const numbers = timer.querySelectorAll(".countdown-number");
+    const launchDate = new Date("2027-06-15T00:00:00+03:00").getTime();
+
+    function updateCountdown() {
+      const time = Math.max(0, launchDate - Date.now());
+
+      const days = Math.floor(time / 86400000);
+      const hours = Math.floor((time / 3600000) % 24);
+      const minutes = Math.floor((time / 60000) % 60);
+      const seconds = Math.floor((time / 1000) % 60);
+
+      [days, hours, minutes, seconds].forEach((value, index) => {
+        numbers[index].textContent = String(value).padStart(2, "0");
+      });
+
+      return time;
+    }
+
+    updateCountdown();
+
+    const interval = setInterval(() => {
+      if (!timer.isConnected || updateCountdown() === 0) {
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
+
+  startCountdown();
+</script>

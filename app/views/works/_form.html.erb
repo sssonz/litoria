@@ -1,0 +1,167 @@
+
+<%= form_with model: @work, class: "work-form" do |form| %>
+
+  <% if @work.errors.any? %>
+    <div class="form-errors">
+      <h3>Не удалось сохранить произведение</h3>
+
+      <ul>
+        <% @work.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <section class="work-form-section">
+
+    <div class="work-form-section-heading">
+      <h2>Основная информация</h2>
+      <p>Расскажите о своём произведении.</p>
+    </div>
+
+    <div class="work-form-fields">
+
+      <div class="form-field">
+        <%= form.label :cover, "Обложка произведения" %>
+
+        <% if @work.cover.attached? %>
+          <div class="current-cover">
+            <%= image_tag @work.cover,
+                  alt: "Текущая обложка произведения" %>
+          </div>
+        <% end %>
+
+        <%= form.file_field :cover,
+              accept: "image/jpeg,image/png,image/webp" %>
+
+        <p class="form-hint">
+          JPG, PNG или WebP. Рекомендуемое соотношение сторон — 2:3.
+          При редактировании пустое поле сохраняет текущую обложку.
+        </p>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :title, "Название произведения" %>
+
+        <%= form.text_field :title,
+              required: true,
+              placeholder: "Введите название" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :summary, "Описание" %>
+
+        <%= form.text_area :summary,
+              rows: 6,
+              required: true,
+              placeholder: "О чём ваша история?" %>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="work-form-section">
+
+    <div class="work-form-section-heading">
+      <h2>Параметры произведения</h2>
+      <p>Укажите основные характеристики истории.</p>
+    </div>
+
+    <div class="work-form-grid">
+
+      <div class="form-field">
+        <%= form.label :work_type, "Тип произведения" %>
+
+        <%= form.select :work_type,
+              [
+                ["Фанфик", "fanfiction"],
+                ["Ориджинал", "original"]
+              ],
+              { prompt: "Выберите тип" },
+              { required: true } %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :fandom_id, "Фэндом" %>
+
+        <%= form.collection_select :fandom_id,
+              Fandom.order(:name),
+              :id,
+              :name,
+              { prompt: "Выберите фэндом" },
+              { required: true } %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :rating, "Возрастной рейтинг" %>
+
+        <%= form.select :rating,
+              [
+                ["16+", "16+"],
+                ["18+", "18+"]
+              ],
+              { prompt: "Выберите рейтинг" },
+              { required: true } %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :status, "Статус произведения" %>
+
+        <%= form.select :status,
+              [
+                ["Черновик", "draft"],
+                ["В процессе", "ongoing"],
+                ["Завершено", "completed"]
+              ],
+              { prompt: "Выберите статус" },
+              { required: true } %>
+      </div>
+
+    </div>
+
+  </section>
+
+  <section class="work-form-section">
+
+    <div class="work-form-section-heading">
+      <h2>Теги и жанры</h2>
+      <p>Выберите подходящие теги для вашего произведения.</p>
+    </div>
+
+    <fieldset class="work-tags">
+      <legend>Теги произведения</legend>
+
+      <div class="work-tags-list">
+
+        <%= form.collection_check_boxes :tag_ids,
+              Tag.order(:kind, :name),
+              :id,
+              :name do |tag| %>
+
+          <div class="tag-checkbox">
+            <%= tag.label do %>
+              <%= tag.check_box %>
+              <%= tag.text %>
+            <% end %>
+          </div>
+
+        <% end %>
+
+      </div>
+    </fieldset>
+
+  </section>
+
+  <div class="form-actions work-form-actions">
+
+    <%= form.submit(
+          @work.persisted? ? "Сохранить изменения" : "Создать произведение"
+        ) %>
+
+    <%= link_to "Отмена", admin_root_path %>
+
+  </div>
+
+<% end %>

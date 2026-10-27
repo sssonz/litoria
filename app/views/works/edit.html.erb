@@ -1,0 +1,47 @@
+
+<main class="work-form-page">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+    <%= link_to "Администрирование", admin_root_path %>
+    <span>/</span>
+    <%= link_to "Произведения", admin_works_path %>
+    <span>/</span>
+    <span>Редактирование</span>
+  </nav>
+
+  <header class="work-form-header">
+
+    <p class="admin-label">Литория / Редактирование</p>
+
+    <h1>Редактирование произведения</h1>
+
+    <p>
+      Измените информацию о своей истории,
+      её параметры или обложку.
+    </p>
+
+  </header>
+
+  <%= render "form" %>
+
+  <% if @work.cover.attached? %>
+
+    <div class="remove-cover-action">
+
+      <%= button_to "Удалить обложку",
+                    remove_cover_work_path(@work),
+                    method: :delete,
+                    form: {
+                      data: {
+                        turbo_confirm: "Вы уверены, что хотите удалить обложку?"
+                      }
+                    },
+                    class: "delete-cover-button" %>
+
+    </div>
+
+  <% end %>
+
+</main>

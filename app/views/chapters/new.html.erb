@@ -1,0 +1,30 @@
+<main class="chapter-form-page">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+    <%= link_to "Администрирование", admin_root_path %>
+    <span>/</span>
+    <%= link_to "Произведения", admin_works_path %>
+    <span>/</span>
+    <%= link_to @work.title, work_path(@work) %>
+    <span>/</span>
+    <span>Новая глава</span>
+  </nav>
+
+  <header class="chapter-form-header">
+
+    <p class="admin-label">Литория / Редактор</p>
+
+    <h1>Новая глава</h1>
+
+    <p>
+      Произведение:
+      <%= link_to @work.title, work_path(@work) %>
+    </p>
+
+  </header>
+
+  <%= render "form" %>
+
+</main>

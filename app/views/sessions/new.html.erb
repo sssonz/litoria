@@ -1,0 +1,54 @@
+
+<main class="login-page">
+
+  <section class="login-container">
+
+    <div class="login-heading">
+      <p class="login-label">Литория / Авторизация</p>
+
+      <h1>Вход в аккаунт</h1>
+
+      <p>Войдите, чтобы продолжить работу с проектом.</p>
+    </div>
+
+    <% if flash[:alert].present? %>
+      <p class="login-error" role="alert">
+        <%= flash[:alert] %>
+      </p>
+    <% end %>
+
+    <%= form_with url: login_path,
+                  method: :post,
+                  class: "login-form" do |form| %>
+
+      <div class="form-field">
+        <%= form.label :email, "Электронная почта" %>
+
+        <%= form.email_field :email,
+              required: true,
+              autocomplete: "email",
+              placeholder: "example@mail.ru" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :password, "Пароль" %>
+
+        <%= form.password_field :password,
+              required: true,
+              autocomplete: "current-password",
+              placeholder: "Введите пароль" %>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "Войти" %>
+      </div>
+
+    <% end %>
+
+    <%= link_to "← Вернуться на главную",
+                root_path,
+                class: "login-back" %>
+
+  </section>
+
+</main>

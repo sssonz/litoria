@@ -1,0 +1,29 @@
+
+<main class="work-form-page">
+
+  <nav class="breadcrumbs" aria-label="Хлебные крошки">
+    <%= link_to "Литория", root_path %>
+    <span>/</span>
+    <%= link_to "Администрирование", admin_root_path %>
+    <span>/</span>
+    <%= link_to "Произведения", admin_works_path %>
+    <span>/</span>
+    <span>Новое произведение</span>
+  </nav>
+
+  <header class="work-form-header">
+
+    <p class="admin-label">Литория / Новая история</p>
+
+    <h1>Новое произведение</h1>
+
+    <p>
+      Заполните информацию о своей истории,
+      чтобы подготовить её к публикации.
+    </p>
+
+  </header>
+
+  <%= render "form" %>
+
+</main>

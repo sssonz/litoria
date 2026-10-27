@@ -1,52 +1,152 @@
-<h1><%= @fandom.name %></h1>
 
-<p>
-  <%= @fandom.description %>
-</p>
+<main class="fandom-show-page">
 
-<h2>Произведения этого фандома</h2>
+  <% fandom_images = {
+    "Baldur's Gate 3" => "baldurs-gate-3.jpg",
+    "Genshin Impact" => "genshin.jpg",
+    "Гарри Поттер" => "dramione.jpg",
+    "Ориджиналы" => "romance.jpg"
+  } %>
 
-<% if @works.any? %>
-  <% @works.each do |work| %>
-    <article>
-      <h3>
-        <%= link_to work.title, work_path(work) %>
-      </h3>
+  <section class="fandom-show-hero">
 
-      <p>
-        <strong>Автор:</strong>
-        <%= work.user.username %>
+    <div class="fandom-show-cover">
+
+      <% if fandom_images[@fandom.name] %>
+
+        <%= image_tag "/fandoms/#{fandom_images[@fandom.name]}",
+              alt: @fandom.name %>
+
+      <% else %>
+
+        <span><%= @fandom.name.to_s.first(1) %></span>
+
+      <% end %>
+
+    </div>
+
+    <div class="fandom-show-info">
+
+      <h1><%= @fandom.name %></h1>
+
+      <% if @fandom.description.present? %>
+
+        <div class="fandom-show-description">
+          <%= simple_format(@fandom.description) %>
+        </div>
+
+      <% end %>
+
+      <p class="fandom-show-count">
+        Произведений: <%= @works.size %>
       </p>
 
-      <p>
-        <strong>Тип:</strong>
-        <%= work.work_type %>
-      </p>
+    </div>
 
-      <p>
-        <strong>Рейтинг:</strong>
-        <%= work.rating %>
-      </p>
+  </section>
 
-      <p>
-        <%= work.summary %>
-      </p>
+  <section class="fandom-show-works">
 
-      <p>
-        <strong>Теги:</strong>
+    <div class="fandom-show-section-header">
 
-        <% work.tags.each do |tag| %>
-          <span><%= tag.name %></span>
+      <h2>Произведения фэндома</h2>
+
+      <span><%= @works.size %></span>
+
+    </div>
+
+    <% if @works.any? %>
+
+      <div class="fandom-show-grid">
+
+        <% @works.each do |work| %>
+
+          <article class="fandom-work-card">
+
+            <%= link_to work_path(work),
+                        class: "fandom-work-link" do %>
+
+              <div class="fandom-work-cover">
+
+                <% if work.cover.attached? %>
+
+                  <%= image_tag work.cover,
+                        alt: "Обложка произведения #{work.title}" %>
+
+                <% else %>
+
+                  <div class="fandom-work-cover-empty">
+                    Нет обложки
+                  </div>
+
+                <% end %>
+
+              </div>
+
+              <div class="fandom-work-info">
+
+                <h3><%= work.title %></h3>
+
+                <p class="fandom-work-author">
+                  <%= work.user.username %>
+                </p>
+
+                <div class="fandom-work-meta">
+
+                  <span><%= work.work_type %></span>
+
+                  <span><%= work.rating %></span>
+
+                </div>
+
+                <% if work.summary.present? %>
+
+                  <p class="fandom-work-summary">
+                    <%= truncate(work.summary, length: 130) %>
+                  </p>
+
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+            <% if work.tags.any? %>
+
+              <div class="fandom-work-tags">
+
+                <% work.tags.each do |tag| %>
+                  <span><%= tag.name %></span>
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+          </article>
+
         <% end %>
-      </p>
-    </article>
 
-    <hr>
-  <% end %>
-<% else %>
-  <p>В этом фандоме пока нет произведений.</p>
-<% end %>
+      </div>
 
-<p>
-  <%= link_to "← Все фандомы", fandoms_path %>
-</p>
+    <% else %>
+
+      <div class="fandom-show-empty">
+
+        <h3>Здесь пока нет произведений</h3>
+
+        <p>
+          Истории по этому фэндому ещё не опубликованы.
+        </p>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+  <%= link_to "← Все фэндомы",
+              fandoms_path,
+              class: "fandom-show-back" %>
+
+</main>

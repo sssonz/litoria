@@ -1,0 +1,93 @@
+
+<main class="admin-dashboard">
+
+  <header class="admin-dashboard-header">
+
+    <div>
+      <p class="admin-label">Литория / Администрирование</p>
+
+      <h1>Панель управления</h1>
+
+      <p class="admin-description">
+        Управление контентом и произведениями платформы.
+      </p>
+    </div>
+
+  </header>
+
+  <section class="admin-stats">
+
+    <div class="admin-stat">
+      <p>Произведения</p>
+      <strong><%= @works_count || "—" %></strong>
+    </div>
+
+    <div class="admin-stat">
+      <p>Главы</p>
+      <strong><%= @chapters_count || "—" %></strong>
+    </div>
+
+    <div class="admin-stat">
+      <p>Фэндомы</p>
+      <strong><%= @fandoms_count || "—" %></strong>
+    </div>
+
+    <div class="admin-stat">
+      <p>Рубрики</p>
+      <strong><%= @rubrics_count || "—" %></strong>
+    </div>
+
+  </section>
+
+  <section class="admin-content">
+
+    <div class="admin-section-heading">
+      <h2>Управление контентом</h2>
+      <p>Основные разделы платформы</p>
+    </div>
+
+    <div class="admin-dashboard-sections">
+
+      <article class="admin-card">
+
+        <div class="admin-card-top">
+          <span class="admin-card-number">01</span>
+          <h3>Произведения</h3>
+        </div>
+
+        <p>
+          Создавайте и редактируйте истории,
+          добавляйте главы, загружайте обложки
+          и управляйте публикациями.
+        </p>
+
+        <%= link_to "Управление произведениями →",
+                    admin_works_path,
+                    class: "admin-card-link" %>
+
+      </article>
+
+      <article class="admin-card">
+
+        <div class="admin-card-top">
+          <span class="admin-card-number">02</span>
+          <h3>Рубрики</h3>
+        </div>
+
+        <p>
+          Создавайте тематические подборки,
+          добавляйте произведения
+          и управляйте содержимым рубрик.
+        </p>
+
+        <%= link_to "Управление рубриками →",
+                    admin_rubrics_path,
+                    class: "admin-card-link" %>
+
+      </article>
+
+    </div>
+
+  </section>
+
+</main>

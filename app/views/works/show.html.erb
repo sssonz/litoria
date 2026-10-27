@@ -1,69 +1,246 @@
-<article>
-  <h1><%= @work.title %></h1>
 
-  <p>
-  <strong>Автор:</strong>
-  <%= link_to @work.user.username, user_path(@work.user) %>
-  </p>
+<main class="work-show-page">
 
-  <p>
-  <strong>Фандом:</strong>
-  <%= link_to @work.fandom.name, fandom_path(@work.fandom) %>
-  </p>
+  <section class="work-show-hero">
 
-  <p>
-    <strong>Тип:</strong>
-    <%= @work.work_type %>
-  </p>
+    <div class="work-show-cover">
 
-  <p>
-    <strong>Рейтинг:</strong>
-    <%= @work.rating %>
-  </p>
+      <% if @work.cover.attached? %>
+        <%= image_tag @work.cover,
+              alt: "Обложка произведения #{@work.title}",
+              class: "work-cover-image" %>
+      <% else %>
+        <div class="work-cover-empty">
+          Обложка не добавлена
+        </div>
+      <% end %>
 
-  <p>
-    <strong>Статус:</strong>
-    <%= @work.status %>
-  </p>
+    </div>
 
-  <p>
-    <%= @work.summary %>
-  </p>
+    <div class="work-show-info">
 
-  <p>
-  <strong>Теги:</strong>
+      <p class="admin-label">Литория / Произведение</p>
 
-  <% @work.tags.each do |tag| %>
-    <span>
-      <%= link_to tag.name, tag_path(tag) %>
-    </span>
-  <% end %>
-  </p>
-</article>
+      <h1><%= @work.title %></h1>
 
-<hr>
+      <div class="work-show-meta">
 
-<h2>Главы</h2>
+        <div>
+          <span>Автор</span>
+          <%= link_to @work.user.username,
+                      user_path(@work.user) %>
+        </div>
 
-<% @work.chapters.order(:position).each do |chapter| %>
-  <div>
-    <h3>
-      <%= link_to chapter.title, work_chapter_path(@work, chapter) %>
-    </h3>
-  </div>
-<% end %>
+        <div>
+          <span>Фэндом</span>
+          <%= link_to @work.fandom.name,
+                      fandom_path(@work.fandom) %>
+        </div>
 
-<hr>
+      </div>
 
-<h2>Комментарии к произведению</h2>
+      <div class="work-show-badges">
 
-<% @work.comments.each do |comment| %>
-  <div>
-    <p><strong><%= comment.user.username %>:</strong></p>
-    <p><%= comment.body %></p>
-  </div>
-<% end %>
+        <span><%= @work.work_type %></span>
 
-<p>
-  <%= link_to "← Назад к каталогу", works_path %>
-</p>
+        <span><%= @work.rating %></span>
+
+        <span><%= @work.status %></span>
+
+      </div>
+
+        <% if current_user && @work.user_id == current_user.id %>
+
+        <div class="work-show-actions">
+
+          <%= link_to "Редактировать произведение",
+                      edit_work_path(@work),
+                      class: "work-show-edit" %>
+
+          <%= link_to "+ Добавить главу",
+                      new_work_chapter_path(@work),
+                      class: "work-show-add" %>
+
+        </div>
+
+      <% end %>
+
+    </div>
+
+  </section>
+
+  <section class="work-show-section work-show-about">
+
+    <% if @work.tags.any? %>
+
+      <div class="work-show-tags">
+
+        <% @work.tags.each do |tag| %>
+
+          <%= link_to tag.name,
+                      tag_path(tag),
+                      class: "work-show-tag" %>
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+    <div class="work-show-description">
+      <%= simple_format(@work.summary) %>
+    </div>
+
+  </section>
+
+  <section class="work-show-section">
+
+    <div class="work-show-section-header">
+
+      <h2>Содержание</h2>
+
+      <span>
+        <%= @work.chapters.count %> глав
+      </span>
+
+    </div>
+
+    <% if @work.chapters.any? %>
+
+      <div class="work-show-chapters">
+
+        <% @work.chapters.order(:position).each do |chapter| %>
+
+          <%= link_to work_chapter_path(@work, chapter),
+                      class: "work-show-chapter" do %>
+
+            <span><%= chapter.title %></span>
+
+            <span aria-hidden="true">↗</span>
+
+          <% end %>
+
+        <% end %>
+
+      </div>
+
+    <% else %>
+
+      <p class="work-show-empty">
+        Главы пока не добавлены.
+      </p>
+
+    <% end %>
+
+  </section>
+
+  <section class="work-show-section">
+
+    <div class="work-show-section-header">
+
+      <h2>Комментарии</h2>
+
+      <span><%= @work.comments.count %></span>
+
+    </div>
+
+    <div class="work-show-comments">
+
+      <% if @work.comments.any? %>
+
+        <% @work.comments.each do |comment| %>
+
+          <article class="comment-card">
+
+            <div class="comment-author">
+              <strong><%= comment.user.username %></strong>
+            </div>
+
+            <p class="comment-text">
+              <%= comment.body %>
+            </p>
+
+            <% if current_user %>
+
+              <div class="comment-actions">
+
+                <% if comment.user_id == current_user.id %>
+
+                  <%= link_to "Редактировать",
+                              edit_comment_path(comment),
+                              class: "edit-comment-button" %>
+
+                <% end %>
+
+                <% if comment.user_id == current_user.id || admin_signed_in? %>
+
+                  <%= button_to "Удалить",
+                                comment_path(comment),
+                                method: :delete,
+                                form: {
+                                  data: {
+                                    turbo_confirm: "Вы уверены, что хотите удалить комментарий?"
+                                  }
+                                },
+                                class: "delete-comment-button" %>
+
+                <% end %>
+
+              </div>
+
+            <% end %>
+
+          </article>
+
+        <% end %>
+
+      <% else %>
+
+        <p class="work-show-empty">
+          Комментариев пока нет.
+        </p>
+
+      <% end %>
+
+    </div>
+
+    <% if current_user %>
+
+      <div class="comment-form">
+
+        <h3>Оставить комментарий</h3>
+
+        <%= form_with scope: :comment,
+                      url: work_comments_path(@work),
+                      method: :post do |form| %>
+
+          <div class="form-field">
+
+            <%= form.label :body, "Ваш комментарий" %>
+
+            <%= form.text_area :body,
+                  rows: 4,
+                  required: true,
+                  placeholder: "Поделитесь впечатлениями об истории..." %>
+
+          </div>
+
+          <div class="form-actions">
+
+            <%= form.submit "Опубликовать комментарий" %>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
+    <% end %>
+
+  </section>
+
+  <%= link_to "← Назад к произведениям",
+              works_path,
+              class: "work-show-back" %>
+
+</main>
